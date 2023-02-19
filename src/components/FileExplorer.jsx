@@ -57,7 +57,22 @@ function FileExplorer({
           onClick={() => setIsOpen(!isOpen)}
           style={{ display: "flex", cursor: "pointer" }}
         >
-          <span>📁 {explorer.name}</span>
+          {showInput.visibility ? (
+            <div>
+              <span>{showInput.isFolder ? "📁" : "📄"}</span>
+              <input
+                type="text"
+                autoFocus
+                onChange={(e) => setInutValue(e.target.value)}
+                value={inputValue}
+                onBlur={() => setShowInput({ ...showInput, visibility: false })}
+                onKeyDown={handleSubmit}
+              />
+            </div>
+          ) : (
+            <span>📁 {explorer.name}</span>
+          )}
+
           <div>
             <button
               style={{
@@ -111,20 +126,6 @@ function FileExplorer({
         <div
           style={{ paddingLeft: "1.5rem", display: isOpen ? "block" : "none" }}
         >
-          {showInput.visibility && (
-            <div>
-              <span>{showInput.isFolder ? "📁" : "📄"}</span>
-              <input
-                type="text"
-                autoFocus
-                onChange={(e) => setInutValue(e.target.value)}
-                value={inputValue}
-                onBlur={() => setShowInput({ ...showInput, visibility: false })}
-                onKeyDown={handleSubmit}
-              />
-            </div>
-          )}
-
           {explorer.items.map((exp) => {
             return (
               <div key={exp.id}>
