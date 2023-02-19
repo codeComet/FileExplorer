@@ -20,6 +20,7 @@ function FileExplorer({
   const [isRenaming, setIsRenaming] = useState(false);
 
   const handleClick = (e, isFolder, renaming) => {
+    // console.log(e, isFolder, renaming);
     e.stopPropagation();
     setIsRenaming(renaming);
     setIsOpen(true);
@@ -27,10 +28,12 @@ function FileExplorer({
       visibility: true,
       isFolder,
     });
+    if (renaming) setInutValue(explorer.name);
   };
 
   const handleSubmit = (e) => {
     if (isRenaming) {
+      //   setInutValue(explorer.name);
       if (e.key === "Enter") {
         handleRenameNode(explorer.id, inputValue);
         setShowInput({
@@ -89,7 +92,7 @@ function FileExplorer({
                 cursor: "pointer",
                 marginLeft: "5px",
               }}
-              onClick={(e) => handleClick(e, false, true)}
+              onClick={(e) => handleClick(e, true, true)}
             >
               <AiOutlineEdit />
             </button>
@@ -117,6 +120,7 @@ function FileExplorer({
                 type="text"
                 autoFocus
                 onChange={(e) => setInutValue(e.target.value)}
+                value={inputValue}
                 onBlur={() => setShowInput({ ...showInput, visibility: false })}
                 onKeyDown={handleSubmit}
               />
