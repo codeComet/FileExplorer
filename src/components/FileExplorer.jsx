@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AiOutlineEdit,
   AiOutlineDelete,
@@ -20,7 +20,6 @@ function FileExplorer({
   const [isRenaming, setIsRenaming] = useState(false);
 
   const handleClick = (e, isFolder, renaming) => {
-    // console.log(e, isFolder, renaming);
     e.stopPropagation();
     setIsRenaming(renaming);
     setIsOpen(true);
@@ -33,7 +32,6 @@ function FileExplorer({
 
   const handleSubmit = (e) => {
     if (isRenaming) {
-      //   setInutValue(explorer.name);
       if (e.key === "Enter") {
         handleRenameNode(explorer.id, inputValue);
         setShowInput({
@@ -145,35 +143,54 @@ function FileExplorer({
     );
   } else {
     return (
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <span style={{ display: "block", margin: "5px 0px" }}>
-          📄 {explorer?.name}
-        </span>
-        <div>
-          <button
-            style={{
-              background: "none",
-              outline: "none",
-              border: "1px solid #eee",
-              cursor: "pointer",
-              marginLeft: "5px",
-            }}
-            onClick={(e) => handleClick(e, false, true)}
-          >
-            <AiOutlineEdit />
-          </button>
-          <button
-            style={{
-              background: "none",
-              outline: "none",
-              border: "1px solid #eee",
-              cursor: "pointer",
-              marginLeft: "5px",
-            }}
-            onClick={() => handleDeleteNode(explorer.id)}
-          >
-            <AiOutlineDelete />
-          </button>
+      <div>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          {showInput.visibility ? (
+            <div>
+              <span>{"📄"}</span>
+              <input
+                type="text"
+                autoFocus
+                onChange={(e) => setInutValue(e.target.value)}
+                value={inputValue}
+                onBlur={() => setShowInput({ ...showInput, visibility: false })}
+                onKeyDown={handleSubmit}
+              />
+            </div>
+          ) : (
+            <span style={{ display: "block", margin: "5px 0px" }}>
+              📄 {explorer?.name}
+            </span>
+          )}
+          {/* <span style={{ display: "block", margin: "5px 0px" }}>
+            📄 {explorer?.name}
+          </span> */}
+          <div>
+            <button
+              style={{
+                background: "none",
+                outline: "none",
+                border: "1px solid #eee",
+                cursor: "pointer",
+                marginLeft: "5px",
+              }}
+              onClick={(e) => handleClick(e, false, true)}
+            >
+              <AiOutlineEdit />
+            </button>
+            <button
+              style={{
+                background: "none",
+                outline: "none",
+                border: "1px solid #eee",
+                cursor: "pointer",
+                marginLeft: "5px",
+              }}
+              onClick={() => handleDeleteNode(explorer.id)}
+            >
+              <AiOutlineDelete />
+            </button>
+          </div>
         </div>
       </div>
     );
