@@ -1,34 +1,35 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { useState } from "react";
+import folderData from "./data/folderData";
+import FileExplorer from "./components/FileExplorer";
+import useTreeTraverse from "./hooks/useTreeTraverse";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const { insertNode, deleteNode, renameNode } = useTreeTraverse();
+  const [explorer, setExplorer] = useState(folderData);
+  const handleInsertNode = (folderId, item, isFolder) => {
+    const finalTree = insertNode(explorer, folderId, item, isFolder);
+    setExplorer(finalTree);
+  };
+
+  const handleDeleteNode = (folderId) => {
+    const finalTree = deleteNode(explorer, folderId);
+    setExplorer(finalTree);
+  };
+
+  const handleRenameNode = (folderId, newName) => {
+    const finalTree = renameNode(explorer, folderId, newName);
+    setExplorer(finalTree);
+  };
 
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <FileExplorer
+        explorer={explorer}
+        setExplorer={setExplorer}
+        handleInsertNode={handleInsertNode}
+        handleDeleteNode={handleDeleteNode}
+        handleRenameNode={handleRenameNode}
+      />
     </div>
-  )
+  );
 }
-
-export default App
